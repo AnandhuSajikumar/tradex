@@ -1,6 +1,6 @@
 package com.spring.tradex.models;
 
-import com.spring.tradex.ENUMS.Role;
+import com.spring.tradex.Enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
