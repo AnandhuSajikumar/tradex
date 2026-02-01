@@ -38,6 +38,15 @@ public class Portfolio {
         this.avgBuyPrice = BigDecimal.ZERO;
     }
 
+
+
+    public static Portfolio createEmptyPortfolio(User user, Stock stock){
+        if(user == null || stock == null){
+            throw new IllegalArgumentException("User and Stock cannot be null");
+        }
+        return new Portfolio(user, stock);
+    }
+
     public void addHoldings(Integer qtyToAdd, BigDecimal buyPrice){
         if(qtyToAdd <= 0) throw new IllegalArgumentException("Quantity must be positive");
 
