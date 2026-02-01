@@ -1,4 +1,4 @@
-package com.spring.tradex;
+package com.spring.tradex.Service;
 
 import com.spring.tradex.Repositories.PortfolioRepository;
 import com.spring.tradex.Repositories.StockRepository;
