@@ -1,4 +1,4 @@
-package com.spring.tradex;
+package com.spring.tradex.ENUMS;
 
 public enum Role {
     USER,
