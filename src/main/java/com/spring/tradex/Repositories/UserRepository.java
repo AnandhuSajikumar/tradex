@@ -1,6 +1,6 @@
 package com.spring.tradex.Repositories;
 
-import com.spring.tradex.models.User;
+import com.spring.tradex.Models.User;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;

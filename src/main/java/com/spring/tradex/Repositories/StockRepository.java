@@ -1,6 +1,6 @@
 package com.spring.tradex.Repositories;
 
-import com.spring.tradex.models.Stock;
+import com.spring.tradex.Models.Stock;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

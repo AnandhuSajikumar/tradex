@@ -1,4 +1,4 @@
-package com.spring.tradex.models;
+package com.spring.tradex.Models;
 
 import com.spring.tradex.Enums.Role;
 import jakarta.persistence.*;

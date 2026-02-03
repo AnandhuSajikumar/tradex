@@ -1,4 +1,4 @@
-package com.spring.tradex.models;
+package com.spring.tradex.Models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
