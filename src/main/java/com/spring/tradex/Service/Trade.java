@@ -41,15 +41,32 @@ public class Trade {
     @Column(nullable = false)
     private Instant executedAt;
 
-    public Trade(User user, Stock stock, TradeType tradeType,
-                 int quantity, BigDecimal priceExecuted,
-                 Instant executedAt) {
+    public Trade(User user, Stock stock,
+                 TradeType tradeType,
+                 int quantity, BigDecimal priceExecuted) {
 
         this.user = user;
         this.stock = stock;
         this.tradeType = tradeType;
         this.quantity = quantity;
         this.priceExecuted = priceExecuted;
-        this.executedAt = executedAt;
     }
+
+    public static Trade create(
+            User user,
+            Stock stock,
+            TradeType tradeType,
+            int quantity,
+            BigDecimal executionPrice
+    ){
+        if(quantity <= 0){
+            throw new IllegalArgumentException("Quantity must be positive");
+        }
+
+        if(executionPrice.compareTo(BigDecimal.ZERO) <= 0){
+            throw new IllegalArgumentException("Execution price should be zero");
+        }
+        return new Trade(user, stock, tradeType, quantity, executionPrice);
+    }
+
 }

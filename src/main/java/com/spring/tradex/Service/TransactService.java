@@ -1,7 +1,9 @@
 package com.spring.tradex.Service;
 
+import com.spring.tradex.Enums.TradeType;
 import com.spring.tradex.Repositories.PortfolioRepository;
 import com.spring.tradex.Repositories.StockRepository;
+import com.spring.tradex.Repositories.TradeRepository;
 import com.spring.tradex.Repositories.UserRepository;
 import com.spring.tradex.Models.Portfolio;
 import com.spring.tradex.Models.Stock;
@@ -19,9 +21,10 @@ public class TransactService {
     private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
     private final StockRepository stockRepository;
+    private final TradeRepository tradeRepository;
 
     @Transactional
-    public void buyStock(Long userId, String stockSymbol, Integer quantity){
+    public Trade buyStock(Long userId, String stockSymbol, Integer quantity){
 
         if(quantity <= 0 ) throw new IllegalArgumentException("Quantity must be positive");
 
@@ -40,10 +43,19 @@ public class TransactService {
                 .orElse(Portfolio.createEmptyPortfolio(user, stock));
 
         portfolio.addHoldings(quantity, executionPrice);
-        portfolioRepository.save(portfolio);
+
+        Trade trade = new Trade(
+                user,stock,TradeType.BUY,
+                quantity,executionPrice
+        );
+
+        tradeRepository.save(trade);
+        return trade;
+
     }
 
-    public void sellStock(Long userId, String stockSymbol, Integer quantity){
+    @Transactional
+    public Trade sellStock(Long userId, String stockSymbol, Integer quantity){
         if(quantity <= 0) throw new IllegalArgumentException("Quantity must be positive");
 
         User user  =  userRepository.findByIdWithLock(userId)
@@ -62,7 +74,12 @@ public class TransactService {
         BigDecimal totalValue = executionPrice.multiply(BigDecimal.valueOf(quantity));
 
         user.creditWallet(totalValue);
-        userRepository.save(user);
+        Trade trade = Trade.create(
+                user,stock, TradeType.SELL,
+                quantity,executionPrice
+        );
+        tradeRepository.save(trade);
+        return trade;
 
     }
 }
