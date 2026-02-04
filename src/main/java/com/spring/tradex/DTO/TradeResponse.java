@@ -9,8 +9,7 @@ import java.time.Instant;
 @Getter
 public class TradeResponse {
 
-    private final String tradeId;
-    private final TradeStatus status;
+    private final Long tradeId;
     private final TradeType type;
     private final String symbol;
     private final int quantity;
@@ -20,8 +19,7 @@ public class TradeResponse {
     private final Instant timestamp;
 
     public TradeResponse(
-            String tradeId,
-            TradeStatus status,
+            Long tradeId,
             TradeType type,
             String symbol,
             int quantity,
@@ -31,7 +29,6 @@ public class TradeResponse {
             Instant timestamp
     ) {
         this.tradeId = tradeId;
-        this.status = status;
         this.type = type;
         this.symbol = symbol;
         this.quantity = quantity;

@@ -1,34 +1,31 @@
 package com.spring.tradex.DTO;
 
-import com.spring.tradex.Enums.TradeStatus;
-import com.spring.tradex.Enums.TradeType;
+import com.spring.tradex.Models.Trade;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.UUID;
+
 
 @NoArgsConstructor
 public final class TradeMapper {
 
     public static TradeResponse toResponse(
-            TradeType type,
-            String symbol,
-            int quantity,
-            BigDecimal executionPrice,
-            BigDecimal totalValue,
-            BigDecimal walletBalanceAfter
+            Trade trade,
+            BigDecimal remainingWalletBalance
+
     ) {
+        BigDecimal totalValue = trade.getPriceExecuted()
+                .multiply(BigDecimal.valueOf(trade.getQuantity()));
+
         return new TradeResponse(
-                UUID.randomUUID().toString(),
-                TradeStatus.SUCCESS,
-                type,
-                symbol,
-                quantity,
-                executionPrice,
+                trade.getId(),
+                trade.getTradeType(),
+                trade.getStock().getSymbol(),
+                trade.getQuantity(),
+                trade.getPriceExecuted(),
                 totalValue,
-                walletBalanceAfter,
-                Instant.now()
+                remainingWalletBalance,
+                trade.getExecutedAt()
         );
     }
 }

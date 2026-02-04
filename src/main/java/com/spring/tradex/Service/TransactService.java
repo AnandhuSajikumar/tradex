@@ -1,6 +1,9 @@
 package com.spring.tradex.Service;
 
+import com.spring.tradex.DTO.TradeMapper;
+import com.spring.tradex.DTO.TradeResponse;
 import com.spring.tradex.Enums.TradeType;
+import com.spring.tradex.Models.Trade;
 import com.spring.tradex.Repositories.PortfolioRepository;
 import com.spring.tradex.Repositories.StockRepository;
 import com.spring.tradex.Repositories.TradeRepository;
@@ -24,7 +27,7 @@ public class TransactService {
     private final TradeRepository tradeRepository;
 
     @Transactional
-    public Trade buyStock(Long userId, String stockSymbol, Integer quantity){
+    public TradeResponse buyStock(Long userId, String stockSymbol, Integer quantity){
 
         if(quantity <= 0 ) throw new IllegalArgumentException("Quantity must be positive");
 
@@ -50,12 +53,12 @@ public class TransactService {
         );
 
         tradeRepository.save(trade);
-        return trade;
+        return TradeMapper.toResponse(trade, user.getWalletBalance());
 
     }
 
     @Transactional
-    public Trade sellStock(Long userId, String stockSymbol, Integer quantity){
+    public TradeResponse sellStock(Long userId, String stockSymbol, Integer quantity){
         if(quantity <= 0) throw new IllegalArgumentException("Quantity must be positive");
 
         User user  =  userRepository.findByIdWithLock(userId)
@@ -74,12 +77,13 @@ public class TransactService {
         BigDecimal totalValue = executionPrice.multiply(BigDecimal.valueOf(quantity));
 
         user.creditWallet(totalValue);
+
         Trade trade = Trade.create(
                 user,stock, TradeType.SELL,
                 quantity,executionPrice
         );
         tradeRepository.save(trade);
-        return trade;
+        return TradeMapper.toResponse(trade, user.getWalletBalance());
 
     }
 }

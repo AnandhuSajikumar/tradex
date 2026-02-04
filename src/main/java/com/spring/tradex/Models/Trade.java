@@ -1,8 +1,6 @@
-package com.spring.tradex.Service;
+package com.spring.tradex.Models;
 
 import com.spring.tradex.Enums.TradeType;
-import com.spring.tradex.Models.Stock;
-import com.spring.tradex.Models.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
