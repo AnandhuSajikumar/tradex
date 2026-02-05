@@ -5,14 +5,19 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.Instant;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "trades")
+@Table(
+        name = "trades",
+        indexes = {
+                @Index(name = "idx_trade_user_time", columnList = "user_id, executedAt"),
+                @Index(name = "idx_trade_stock_time", columnList = "stock_id, executedAt")
+        }
+)
 public class Trade {
 
     @Id
@@ -20,7 +25,7 @@ public class Trade {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stock_id",nullable = false)
+    @JoinColumn(name = "user_id",nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,7 +44,7 @@ public class Trade {
     @Column(nullable = false)
     private Instant executedAt;
 
-    public Trade(User user, Stock stock,
+    private Trade(User user, Stock stock,
                  TradeType tradeType,
                  int quantity, BigDecimal priceExecuted) {
 
@@ -48,6 +53,7 @@ public class Trade {
         this.tradeType = tradeType;
         this.quantity = quantity;
         this.priceExecuted = priceExecuted;
+        this.executedAt = Instant.now();
     }
 
     public static Trade create(
