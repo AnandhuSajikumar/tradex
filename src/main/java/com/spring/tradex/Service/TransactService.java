@@ -47,7 +47,7 @@ public class TransactService {
 
         portfolio.addHoldings(quantity, executionPrice);
 
-        Trade trade = new Trade(
+        Trade trade = Trade.create(
                 user,stock,TradeType.BUY,
                 quantity,executionPrice
         );
@@ -79,8 +79,8 @@ public class TransactService {
         user.creditWallet(totalValue);
 
         Trade trade = Trade.create(
-                user,stock, TradeType.SELL,
-                quantity,executionPrice
+                user, stock, TradeType.SELL,
+                quantity, executionPrice
         );
         tradeRepository.save(trade);
         return TradeMapper.toResponse(trade, user.getWalletBalance());
