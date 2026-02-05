@@ -11,6 +11,7 @@ import com.spring.tradex.Repositories.UserRepository;
 import com.spring.tradex.Models.Portfolio;
 import com.spring.tradex.Models.Stock;
 import com.spring.tradex.Models.User;
+import com.spring.tradex.components.MarketHoursValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,12 @@ public class TransactService {
     private final PortfolioRepository portfolioRepository;
     private final StockRepository stockRepository;
     private final TradeRepository tradeRepository;
+    private final MarketHoursValidator marketHoursValidator;
 
     @Transactional
     public TradeResponse buyStock(Long userId, String stockSymbol, Integer quantity){
+
+        marketHoursValidator.validateMarketHours();
 
         if(quantity <= 0 ) throw new IllegalArgumentException("Quantity must be positive");
 
