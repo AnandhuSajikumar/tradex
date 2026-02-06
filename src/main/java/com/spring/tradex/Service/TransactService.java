@@ -14,6 +14,8 @@ import com.spring.tradex.Models.User;
 import com.spring.tradex.components.MarketHoursValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -89,5 +91,11 @@ public class TransactService {
         tradeRepository.save(trade);
         return TradeMapper.toResponse(trade, user.getWalletBalance());
 
+    }
+
+    @Transactional
+    public Page<TradeResponse> getTradeHistory (Long userId, Pageable pageable){
+        return tradeRepository.findByUserIdOrderByExecutedAtDesc(userId, pageable)
+                .map(trade -> TradeMapper.toResponse(trade, null));
     }
 }
