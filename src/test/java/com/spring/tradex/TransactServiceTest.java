@@ -1,6 +1,7 @@
 package com.spring.tradex;
 
 import com.spring.tradex.Enums.Role;
+import com.spring.tradex.Models.Portfolio;
 import com.spring.tradex.Models.Stock;
 import com.spring.tradex.Models.User;
 import com.spring.tradex.Repositories.PortfolioRepository;
@@ -14,6 +15,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.math.BigDecimal;
@@ -27,9 +31,10 @@ import java.util.concurrent.Future;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
-
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class TransactServiceTest {
+
 
     @Autowired
     private TransactService transactService;
@@ -135,8 +140,15 @@ class TransactServiceTest {
     @Test
     void concurrentSells_quantityNeverNegative() throws Exception {
         userRepository.findById(userId).get().creditWallet(BigDecimal.valueOf(10_000));
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new IllegalArgumentException("User not found"));
+        Stock stock = stockRepository.findBySymbol(stockSymbol)
+                .orElseThrow(()-> new IllegalArgumentException("Stock not found"));
 
-        transactService.buyStock(userId, stockSymbol, 10);
+        Portfolio portfolio = new Portfolio(user,stock);
+        portfolio.addHoldings(10, BigDecimal.valueOf(100));
+        portfolioRepository.save(portfolio);
+
 
         ExecutorService executor = Executors.newFixedThreadPool(2);
 
