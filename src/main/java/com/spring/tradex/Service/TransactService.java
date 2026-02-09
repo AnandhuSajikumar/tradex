@@ -1,7 +1,7 @@
 package com.spring.tradex.Service;
 
-import com.spring.tradex.DTO.TradeMapper;
-import com.spring.tradex.DTO.TradeResponse;
+import com.spring.tradex.DTO.Trade.TradeMapper;
+import com.spring.tradex.DTO.Trade.TradeResponse;
 import com.spring.tradex.Enums.TradeType;
 import com.spring.tradex.Models.Trade;
 import com.spring.tradex.Repositories.PortfolioRepository;

@@ -1,6 +1,5 @@
-package com.spring.tradex.DTO;
+package com.spring.tradex.DTO.Trade;
 
-import com.spring.tradex.Enums.TradeStatus;
 import com.spring.tradex.Enums.TradeType;
 import lombok.Getter;
 import java.math.BigDecimal;

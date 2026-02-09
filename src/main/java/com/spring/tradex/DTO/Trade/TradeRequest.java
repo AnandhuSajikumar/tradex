@@ -1,4 +1,4 @@
-package com.spring.tradex.DTO;
+package com.spring.tradex.DTO.Trade;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
