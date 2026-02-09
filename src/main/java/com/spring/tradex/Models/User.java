@@ -23,7 +23,10 @@ public class User implements UserDetails {
     private long id;
 
     @Column(nullable = false)
-    private String fullName;
+    private String firstname;
+
+    @Column(nullable = false)
+    private String lastname;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -41,9 +44,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Portfolio> portfolioItems;
 
-    public User(String fullName, String email, String password,Role role, BigDecimal walletBalance,
+    public User(String firstname, String lastname, String email, String password,Role role, BigDecimal walletBalance,
                 List<Portfolio> portfolioItems) {
-        this.fullName = fullName;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -67,12 +71,29 @@ public class User implements UserDetails {
         }
     }
 
+    public static User register(
+            String firstname,
+            String lastname,
+            String email,
+            String encodedPassword,
+            Role role
+    ){
+        User user = new User();
+        user.firstname = firstname;
+        user.lastname = lastname;
+        user.email = email;
+        user.password = encodedPassword;
+        user.role = role;
+        return user;
+
+    }
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
+
 
 
     @Override
