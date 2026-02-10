@@ -8,12 +8,15 @@ import com.spring.tradex.Repositories.UserRepository;
 import com.spring.tradex.Service.TransactService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.SpringCacheAnnotationParser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import javax.print.attribute.standard.PageRanges;
 
 @RestController
 @Getter
@@ -40,8 +43,16 @@ public class TradeController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/all-trades")
     public Page<TradeResponse> allTrades(@PageableDefault(size = 5) Pageable pageable) {
-        return transactService.getAllTrade(pageable)
-                .map(TradeMapper::toResponse);
+        return transactService.getAllTrade(pageable);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/orders")
+    public Page<TradeResponse> tradeHistoryById(
+            @PageableDefault(size = 5) Pageable pageable,
+            @AuthenticationPrincipal User user
+            ){
+        return transactService.getTradeHistory(user.getId(), pageable);
     }
 
 

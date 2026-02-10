@@ -93,8 +93,9 @@ public class TransactService {
 
     }
 
-    public Page<Trade> getAllTrade(Pageable pageable){
-        return tradeRepository.findAll(pageable);
+    public Page<TradeResponse> getAllTrade(Pageable pageable){
+        return tradeRepository.findAll(pageable)
+                .map(trade -> TradeMapper.toResponse(trade, null));
     }
 
     @Transactional
