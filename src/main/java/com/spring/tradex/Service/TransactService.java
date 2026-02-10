@@ -93,6 +93,10 @@ public class TransactService {
 
     }
 
+    public Page<Trade> getAllTrade(Pageable pageable){
+        return tradeRepository.findAll(pageable);
+    }
+
     @Transactional
     public Page<TradeResponse> getTradeHistory (Long userId, Pageable pageable){
         return tradeRepository.findByUserIdOrderByExecutedAtDesc(userId, pageable)
