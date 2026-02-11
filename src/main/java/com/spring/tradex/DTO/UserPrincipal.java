@@ -20,7 +20,7 @@ public class UserPrincipal implements UserDetails {
         this.authorities = authorities;
     }
 
-    public long getuserId(){
+    public long getUserId(){
         return userId;
     }
 
