@@ -3,6 +3,7 @@ package com.spring.tradex.Controller;
 import com.spring.tradex.DTO.Trade.TradeMapper;
 import com.spring.tradex.DTO.Trade.TradeRequest;
 import com.spring.tradex.DTO.Trade.TradeResponse;
+import com.spring.tradex.DTO.UserPrincipal;
 import com.spring.tradex.Models.User;
 import com.spring.tradex.Repositories.UserRepository;
 import com.spring.tradex.Service.TransactService;
@@ -31,10 +32,10 @@ public class TradeController {
     @PostMapping("/buy")
     public TradeResponse buy(
             @RequestBody TradeRequest request,
-            @AuthenticationPrincipal User user
+            @AuthenticationPrincipal UserPrincipal userPrincipal
     ){
         return transactService.buyStock(
-                user.getId(),
+                userPrincipal.getId(),
                 request.getStockSymbol(),
                 request.getQuantity()
         );
@@ -50,9 +51,9 @@ public class TradeController {
     @GetMapping("/orders")
     public Page<TradeResponse> tradeHistoryById(
             @PageableDefault(size = 5) Pageable pageable,
-            @AuthenticationPrincipal User user
+            @AuthenticationPrincipal UserPrincipal userPrincipal
             ){
-        return transactService.getTradeHistory(user.getId(), pageable);
+        return transactService.getTradeHistory(userPrincipal.getId(), pageable);
     }
 
 

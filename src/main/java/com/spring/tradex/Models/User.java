@@ -4,9 +4,7 @@ import com.spring.tradex.Enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -44,7 +42,8 @@ public class User  {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Portfolio> portfolioItems;
 
-    public User(String firstname, String lastname, String email, String password,Role role, BigDecimal walletBalance,
+    public User(String firstname, String lastname, String email,
+                String password,Role role, BigDecimal walletBalance,
                 List<Portfolio> portfolioItems) {
         this.firstname = firstname;
         this.lastname = lastname;
